@@ -1,0 +1,10 @@
+[project]
+name = "tce-kmc-tutorial"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "scikit-learn>=1.9.1",
+    "tce-lib>=1.0.4",
+]
