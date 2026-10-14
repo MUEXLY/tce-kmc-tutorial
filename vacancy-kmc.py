@@ -16,6 +16,7 @@ DUMP_EVERY: int = 10
 BOLTZMANN_CONSTANT: float = 8.617e-5
 TEMPERATURE: float = 1000
 RATE_PREFACTOR: float = 1.0e+13
+VANADIUM_FRACTION: float = 0.05
 
 
 def main():
@@ -42,16 +43,15 @@ def main():
     )
     tungsten_lattice_parameter = np.cbrt(bulk("W", cubic=True).get_volume())
 
-    pure_tungsten = multilattice_basis.repeat((4, 4, 4))
+    pure_tungsten = multilattice_basis.repeat((6, 6, 6))
     pure_tungsten.positions *= tungsten_lattice_parameter
     pure_tungsten.cell *= tungsten_lattice_parameter
     bcc_sites_mask, = np.where(pure_tungsten.symbols == "W")
 
     configuration = pure_tungsten.copy()
-    vanadium_fraction = RNG.uniform()
     configuration.symbols[bcc_sites_mask] = RNG.choice(
         ["W", "V"], 
-        p=[1.0 - vanadium_fraction, vanadium_fraction], 
+        p=[1.0 - VANADIUM_FRACTION, VANADIUM_FRACTION], 
         size=len(bcc_sites_mask)
     )
     vacancy_index = RNG.choice(bcc_sites_mask)
@@ -101,7 +101,8 @@ def main():
             neighboring_atomic_points = []
             for saddle_point in neighboring_saddle_points:
                 neighboring_atomic_point, = np.where(
-                    adjacency_tensors[0, vacancy_index, saddle_point] * adjacency_tensors[0, saddle_point, :] * adjacency_tensors[4, vacancy_index, :]
+                    adjacency_tensors[0, vacancy_index, saddle_point] * \
+                      adjacency_tensors[0, saddle_point, :] * adjacency_tensors[4, vacancy_index, :]
                 )
                 neighboring_atomic_points.append(neighboring_atomic_point.item())
             

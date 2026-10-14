@@ -22,7 +22,7 @@ def main():
         ax.plot(times, v_center, label="V")
 
     axs[0].legend()
-    fig.savefig("positions.png")
+    fig.savefig("plots/positions.png")
 
 
 if __name__ == "__main__":
