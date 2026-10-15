@@ -221,7 +221,7 @@ def main():
             dtype=float
         )
         forward_barrier = energies.max() - energies[0]
-        backward_barrier = energies.max() - energies[1]
+        backward_barrier = energies.max() - energies[-1]
 
         rxn_progress = np.linspace(0.0, 100.0, len(energies))
 
